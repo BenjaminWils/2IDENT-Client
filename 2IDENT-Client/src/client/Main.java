@@ -7,7 +7,7 @@ package client;
 
 /**
  *
- * @author Benjamin
+ * @author Benjamin (LOL)
  */
 public class Main {
     
