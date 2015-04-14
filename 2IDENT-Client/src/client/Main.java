@@ -10,12 +10,10 @@ package client;
  * @author Benjamin (LOL)
  */
 public class Main {
-    private static InterfacePseudo itfPseudo;
-    private static InterfaceSalon itfSalon;
-    private static InterfaceJeu itfJeu;
+    private static Client c;
     
     public static void main(String[] args) {
-        itfPseudo = new InterfacePseudo();
-        itfPseudo.setVisible(true);
+        c = new Client();
+        c.start();
     }
 }
