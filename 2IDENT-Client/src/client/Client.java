@@ -21,8 +21,8 @@ public class Client extends Thread{
     private final int portSoc = 2000;
     private BufferedReader in;
     private PrintWriter out;
-    String pseudo;
-    String buffer="";
+    public String pseudo;
+    private String buffer="";
     private static InterfacePseudo itfPseudo;
     private static InterfaceSalon itfSalon;
     private static InterfaceJeu itfJeu;
@@ -53,8 +53,14 @@ public class Client extends Thread{
             
             buffer = this.in.readLine();
             
-            itfSalon = new InterfaceSalon();
-            itfSalon.setVisible(true);
+            String[] decoup = buffer.split("::");
+            
+            if(decoup[0].equals("salon") && decoup[1].equals("liste")){
+            
+                itfSalon = new InterfaceSalon(decoup[2],this);
+
+                itfSalon.setVisible(true);
+            }
         }
         catch(Exception e){
             System.out.println("error client : "+e.getMessage());
@@ -78,4 +84,69 @@ public class Client extends Thread{
         this.pseudo = pseudo;
     }
     
+    public void refreshSalons(){
+        try{
+            ecrireMessage("salon::refresh");
+            buffer = this.in.readLine();
+
+            String[] decoup = buffer.split("::");
+            if(decoup[0].equals("salon") && decoup[1].equals("liste")){
+
+                itfSalon.setLobbyList(decoup[2]);
+
+            }
+        }
+        catch(Exception e){
+            System.out.println("error refresh salon : "+e.getMessage());
+        }
+    }
+    
+    public void creerSalon(String nom, String nbJoueurs){
+        try{
+            ecrireMessage("salon::creation::"+nom+"::"+nbJoueurs);
+            buffer=this.in.readLine();
+            if(buffer.equals("salon::creation::ok")){
+                // lancement du jeu
+                lancerJeu();
+            }
+            else if(buffer.matches("salon::creation::erreur.*")){
+                itfSalon.setError(buffer.split("::")[3]);
+            }
+        }
+        catch(Exception e){
+            System.out.println("error creer salon : "+e.getMessage());
+        }
+    }
+    
+    public void lancerJeu(){
+        try{
+            itfSalon.setVisible(false);
+
+            itfJeu=new InterfaceJeu(this);
+            itfJeu.setVisible(true);
+        
+            Listener ecouteur = new Listener(in, out, this, itfJeu);
+            ecouteur.start();
+        }
+        catch(Exception e){
+            System.out.println("error jeu : "+e.getMessage());
+        }
+    }
+    
+    public void connecterSalon(String nom){
+        try{
+            ecrireMessage("salon::connection::"+nom);
+            buffer=this.in.readLine();
+            if(buffer.equals("salon::connection::ok")){
+                // lancement du jeu
+                lancerJeu();
+            }
+            else if(buffer.matches("salon::connection::erreur.*")){
+                itfSalon.setError(buffer.split("::")[3]);
+            }
+        }
+        catch(Exception e){
+            System.out.println("error connecter salon : "+e.getMessage());
+        }
+    }
 }

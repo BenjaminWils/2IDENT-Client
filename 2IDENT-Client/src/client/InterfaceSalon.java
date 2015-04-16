@@ -5,17 +5,36 @@
  */
 package client;
 
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.util.Iterator;
+import javax.swing.DefaultListModel;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 /**
  *
  * @author Quentin
  */
 public class InterfaceSalon extends javax.swing.JFrame {
+    private JSONArray lobbyListJSON;
+    private final JSONParser parser;
+    private final Client c;
+    private String[] salons;
 
     /**
      * Creates new form InterfaceSalon
+     * @param liste
+     * @param client
      */
-    public InterfaceSalon() {
+    public InterfaceSalon(String liste, Client client) {
         initComponents();
+        this.c=client;
+        this.lobbyListJSON=new JSONArray();
+        parser = new JSONParser();
+        
+        setLobbyList(liste);
     }
 
     /**
@@ -36,6 +55,8 @@ public class InterfaceSalon extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         btnSalon = new javax.swing.JButton();
+        refreshButton = new javax.swing.JButton();
+        labelError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,6 +68,11 @@ public class InterfaceSalon extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        lobbyList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lobbyListValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(lobbyList);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -54,9 +80,40 @@ public class InterfaceSalon extends javax.swing.JFrame {
 
         jLabel3.setText("Nom du salon :");
 
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+
         jLabel4.setText("Nombre de joueurs (3-10) :");
 
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField2KeyReleased(evt);
+            }
+        });
+
         btnSalon.setText("Valider");
+        btnSalon.setEnabled(false);
+        btnSalon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalonActionPerformed(evt);
+            }
+        });
+
+        refreshButton.setText("Rafraîchir");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,7 +124,9 @@ public class InterfaceSalon extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE))
                         .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
@@ -79,7 +138,8 @@ public class InterfaceSalon extends javax.swing.JFrame {
                                 .addComponent(jLabel3)
                                 .addGap(70, 70, 70)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelError))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -88,9 +148,6 @@ public class InterfaceSalon extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addComponent(jLabel2)
@@ -102,13 +159,62 @@ public class InterfaceSalon extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalon)))
+                        .addGap(3, 3, 3)
+                        .addComponent(labelError)
+                        .addGap(1, 1, 1)
+                        .addComponent(btnSalon))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(refreshButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalonActionPerformed
+        c.creerSalon(jTextField1.getText(), jTextField2.getText());
+    }//GEN-LAST:event_btnSalonActionPerformed
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        c.refreshSalons();
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        if(verifSalon(jTextField1.getText(),jTextField2.getText())){
+            btnSalon.setEnabled(true);
+        }
+        else{
+            btnSalon.setEnabled(false);
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
+        if(verifSalon(jTextField1.getText(),jTextField2.getText())){
+            btnSalon.setEnabled(true);
+        }
+        else{
+            btnSalon.setEnabled(false);
+        }
+    }//GEN-LAST:event_jTextField2KeyReleased
+
+    private void lobbyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lobbyListValueChanged
+        c.connecterSalon(lobbyList.getSelectedValue().toString().split("  ")[0]);
+    }//GEN-LAST:event_lobbyListValueChanged
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER && btnSalon.isEnabled()){
+            c.creerSalon(jTextField1.getText(), jTextField2.getText());
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER && btnSalon.isEnabled()){
+            c.creerSalon(jTextField1.getText(), jTextField2.getText());
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -120,6 +226,39 @@ public class InterfaceSalon extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel labelError;
     private javax.swing.JList lobbyList;
+    private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
+
+    private boolean verifSalon(String name, String nbJoueurs){
+        boolean result=true;
+        if(!(name.length()>0 && nbJoueurs.length()>0 && nbJoueurs.matches("[3-9]|10"))) result=false;
+        return result;
+    }
+    public void setLobbyList(String liste) {
+        DefaultListModel lobbyListContent = new DefaultListModel();
+        
+        if(!liste.equals("[]")){
+            try{
+                this.lobbyListJSON=(JSONArray) parser.parse(liste);
+            }
+            catch(Exception e){
+                System.out.println("error json : "+e.getLocalizedMessage());
+            }
+
+            Iterator it = lobbyListJSON.iterator();
+
+            while(it.hasNext()){
+                JSONObject lobby = (JSONObject) it.next();
+                lobbyListContent.addElement(lobby.get("name")+"  "+lobby.get("nbJoueurs")+"/"+lobby.get("nbJoueursMax"));
+            }
+        }
+        lobbyList.setModel(lobbyListContent);    
+    }
+    
+    public void setError(String msg){
+        this.labelError.setText(msg);
+        this.labelError.setForeground(Color.red);
+    }
 }

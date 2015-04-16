@@ -5,17 +5,22 @@
  */
 package client;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author Quentin
  */
-public class InterfaceJeu extends javax.swing.JFrame {
+public class InterfaceJeu extends javax.swing.JFrame{
+    private final Client c;
 
     /**
      * Creates new form InterfaceJeu
+     * @param cl
      */
-    public InterfaceJeu() {
+    public InterfaceJeu(Client cl) {
         initComponents();
+        this.c=cl;
     }
 
     /**
@@ -32,28 +37,55 @@ public class InterfaceJeu extends javax.swing.JFrame {
         btnChat = new javax.swing.JButton();
         txtFieldChatEcr = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
+        labelMsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         txtAreaChatLect.setEditable(false);
-        txtAreaChatLect.setColumns(20);
+        txtAreaChatLect.setColumns(15);
         txtAreaChatLect.setRows(5);
         jScrollPane1.setViewportView(txtAreaChatLect);
 
         btnChat.setText("Envoyer");
+        btnChat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChatActionPerformed(evt);
+            }
+        });
+
+        txtFieldChatEcr.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtFieldChatEcrKeyPressed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(51, 102, 0));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        labelMsg.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelMsg.setForeground(java.awt.Color.white);
+        labelMsg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -88,12 +120,42 @@ public class InterfaceJeu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChatActionPerformed
+        c.ecrireMessage("chat::"+txtFieldChatEcr.getText());
+        txtFieldChatEcr.setText("");
+    }//GEN-LAST:event_btnChatActionPerformed
+
+    private void txtFieldChatEcrKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFieldChatEcrKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            c.ecrireMessage("chat::"+txtFieldChatEcr.getText());
+            txtFieldChatEcr.setText("");
+        }
+    }//GEN-LAST:event_txtFieldChatEcrKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if(evt.isControlDown() && evt.getKeyChar()=='C'){
+            txtFieldChatEcr.grabFocus();
+            txtFieldChatEcr.requestFocus();
+            System.out.println("keypress");
+        }
+    }//GEN-LAST:event_formKeyPressed
+    
+    public void receptionMsg(String msg){
+        txtAreaChatLect.append(msg+'\n');
+    }
+    
+    public void afficherMessage(String msg){
+        this.labelMsg.setText(msg);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChat;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelMsg;
     private javax.swing.JTextArea txtAreaChatLect;
     private javax.swing.JTextField txtFieldChatEcr;
     // End of variables declaration//GEN-END:variables
+
+    
 }
