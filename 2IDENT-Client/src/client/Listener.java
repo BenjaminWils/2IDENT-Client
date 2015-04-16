@@ -31,6 +31,7 @@ public class Listener extends Thread{
         while(!Thread.currentThread().isInterrupted()){
             try{
                 buffer=this.in.readLine();
+                System.out.println("listened : "+buffer);
                 if(buffer != null){
                     //CHAT
                     if(buffer.matches("chat::.*")){
@@ -50,7 +51,7 @@ public class Listener extends Thread{
                     }
                     //INFOS JOUEURS (pseudo, rôle, nbCartes, nbPres, nbVP, nbNeutre, nbSecr, nbTrou)
                     else if(buffer.matches("jeu::infosJoueurs::.*")){
-                        
+                        itfJeu.afficherInfosJoueurs(buffer.split("::")[2]);
                     }
                     //DISTRIBUTION CARTES
                     else if(buffer.matches("jeu::cartes::.*")){

@@ -6,6 +6,10 @@
 package client;
 
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  *
@@ -13,6 +17,9 @@ import java.awt.event.KeyEvent;
  */
 public class InterfaceJeu extends javax.swing.JFrame{
     private final Client c;
+    private JSONArray infosJoueurs;
+    private final JSONParser parser;
+    JSONObject obj;
 
     /**
      * Creates new form InterfaceJeu
@@ -21,6 +28,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
     public InterfaceJeu(Client cl) {
         initComponents();
         this.c=cl;
+        this.infosJoueurs=new JSONArray();
+        parser = new JSONParser();
     }
 
     /**
@@ -38,6 +47,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         txtFieldChatEcr = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         labelMsg = new javax.swing.JLabel();
+        labelInfosJoueurs = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -71,19 +81,28 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelMsg.setForeground(java.awt.Color.white);
         labelMsg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        labelInfosJoueurs.setForeground(java.awt.Color.white);
+        labelInfosJoueurs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelInfosJoueurs)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(labelInfosJoueurs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(121, 121, 121))
         );
@@ -152,10 +171,33 @@ public class InterfaceJeu extends javax.swing.JFrame{
     private javax.swing.JButton btnChat;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelInfosJoueurs;
     private javax.swing.JLabel labelMsg;
     private javax.swing.JTextArea txtAreaChatLect;
     private javax.swing.JTextField txtFieldChatEcr;
     // End of variables declaration//GEN-END:variables
+
+    void afficherInfosJoueurs(String infos) {
+        if(!infos.equals("[]")){
+            try{
+                this.infosJoueurs=(JSONArray) parser.parse(infos);
+            }
+            catch(Exception e){
+                System.out.println("error json : "+e.getLocalizedMessage());
+            }
+            Iterator it = infosJoueurs.iterator();
+            
+            String text="";
+            while(it.hasNext()){
+                obj = (JSONObject) it.next();
+                if(!obj.get("pseudo").equals(c.pseudo)){
+                    text=text+"< "+obj.get("pseudo")+" ["+obj.get("role")+"] "+obj.get("nbCartes")+" cartes > ";
+                }
+                System.out.println(text);
+            }
+            labelInfosJoueurs.setText(text);
+        }
+    }
 
     
 }
