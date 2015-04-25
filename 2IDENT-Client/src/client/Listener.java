@@ -55,7 +55,7 @@ public class Listener extends Thread{
                     }
                     //DISTRIBUTION CARTES
                     else if(buffer.matches("jeu::cartes::.*")){
-                        
+                        //itfJeu.distribuerCartes(buffer.split("::")[2]);
                     }
                 }
             }
