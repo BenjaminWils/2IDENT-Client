@@ -5,8 +5,14 @@
  */
 package client;
 
+import java.awt.BorderLayout;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
+import static javax.swing.GroupLayout.Alignment.CENTER;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,9 +23,11 @@ import org.json.simple.parser.JSONParser;
  */
 public class InterfaceJeu extends javax.swing.JFrame{
     private final Client c;
-    private JSONArray infosJoueurs;
+    private JSONArray infosJoueurs, cartes;
     private final JSONParser parser;
-    JSONObject obj;
+    private JSONObject obj;
+    private String auxName;
+    private ArrayList<ImageIcon> imgCartes;
 
     /**
      * Creates new form InterfaceJeu
@@ -29,7 +37,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
         initComponents();
         this.c=cl;
         this.infosJoueurs=new JSONArray();
+        this.cartes=new JSONArray();
         parser = new JSONParser();
+        this.imgCartes=new ArrayList();
     }
 
     /**
@@ -50,6 +60,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelInfosJoueurs = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("2IDENT");
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -193,11 +204,47 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 if(!obj.get("pseudo").equals(c.pseudo)){
                     text=text+"< "+obj.get("pseudo")+" ["+obj.get("role")+"] "+obj.get("nbCartes")+" cartes > ";
                 }
-                System.out.println(text);
             }
             labelInfosJoueurs.setText(text);
         }
     }
 
-    
+    public void distribuerCartes(String cartesList){
+        System.out.println("distribution des cartes");
+        if(!cartesList.equals("[]")){
+            imgCartes.clear();
+            try{
+                this.cartes=(JSONArray) parser.parse(cartesList);
+            }
+            catch(Exception e){
+                System.out.println("error json : "+e.getLocalizedMessage());
+            }
+            Iterator it = cartes.iterator();
+            
+            //while(it.hasNext()){
+                obj = (JSONObject) it.next();
+                auxName=obj.get("hauteur").toString()+'-'+obj.get("couleur").toString()+".gif";
+                System.out.println(auxName);
+                System.out.println("Bonjour");
+                ImageIcon icon = new ImageIcon(auxName); 
+                JLabel label = new JLabel(); 
+                label.setIcon(icon); 
+                jPanel1.add(label); 
+                //jPanel1.repaint(); 
+//                JLabel image = new JLabel( new ImageIcon(auxName));
+//                image.setLayout(new BorderLayout());
+//                image.setSize(jPanel1.getWidth(),jPanel1.getHeight());
+//                this.jPanel1.add(image, BorderLayout.CENTER);
+//                jPanel1.repaint();
+//                ImageIcon tempImg=new ImageIcon("../images/"+auxName+".gif");
+//                imgCartes.add(tempImg);
+//                Image b=tempImg.getImage();
+//                this.getGraphics().drawImage(b, 192, 280, null);
+//                tempImg.paintIcon(this, null, 192, 280);
+//                this.jPanel1.add(tempImg);
+           // }
+            
+            
+        }
+    }
 }
