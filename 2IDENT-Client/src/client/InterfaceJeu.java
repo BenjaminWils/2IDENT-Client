@@ -225,7 +225,6 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 obj = (JSONObject) it.next();
                 auxName=obj.get("hauteur").toString()+'-'+obj.get("couleur").toString()+".gif";
                 System.out.println(auxName);
-                System.out.println("Bonjour");
                 ImageIcon icon = new ImageIcon(auxName); 
                 JLabel label = new JLabel(); 
                 label.setIcon(icon); 
