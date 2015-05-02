@@ -33,7 +33,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
     private final JSONParser parser;
     private JSONObject obj;
     private String auxName, tourName;
-    private ArrayList<JLabel> imgCartes;
+    private ArrayList<JLabel> imgCartes, imgCartesPosees;
     private ArrayList<Component> cartesSelectionnees;
     private ArrayList<String> cartesJouablesString;
 
@@ -49,6 +49,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         this.cartesJouables=new JSONArray();
         parser = new JSONParser();
         this.imgCartes=new ArrayList();
+        this.imgCartesPosees=new ArrayList();
         this.cartesSelectionnees=new ArrayList();
         this.cartesJouablesString=new ArrayList();
         this.jButton1.setVisible(false);
@@ -73,6 +74,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelMsg = new javax.swing.JLabel();
         labelInfosJoueurs = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("2IDENT");
@@ -116,6 +118,19 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
         jButton1.setText("Jouer");
 
+        jPanel2.setBackground(new java.awt.Color(51, 102, 0));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,6 +145,10 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(56, 56, 56))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(178, 178, 178)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,6 +156,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addContainerGap()
                 .addComponent(labelInfosJoueurs)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
@@ -207,6 +228,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
     private javax.swing.JButton btnChat;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelInfosJoueurs;
     private javax.swing.JLabel labelMsg;
@@ -237,8 +259,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
     public void distribuerCartes(String cartesList){
         //System.out.println("distribution des cartes");
+        nettoyerMain();
         if(!cartesList.equals("[]")){
-            imgCartes.clear();
             try{
                 this.cartes=(JSONArray) parser.parse(cartesList);
             }
@@ -419,6 +441,50 @@ public class InterfaceJeu extends javax.swing.JFrame{
         }
         else{
             jButton1.setEnabled(false);
+        }
+    }
+    
+    public void nettoyerMain(){
+        try{
+            Iterator it = imgCartes.iterator();
+            while(it.hasNext()){
+               JLabel aux = (JLabel) it.next();
+               aux.getParent().remove(aux);
+            }
+            imgCartes.clear();
+        }
+        catch(Exception e){
+            System.out.println("erreur nettoyage main : "+e.getMessage());
+        }
+    }
+    
+    public void poserCartes(String cartesList){
+        jPanel2.removeAll();
+        System.out.println("cartes posées : "+cartesList);
+        if(!cartesList.equals("[]")){
+            try{
+                this.cartes=(JSONArray) parser.parse(cartesList);
+                Iterator it = cartes.iterator();
+                int i=0;
+                int j=0;
+                while(it.hasNext()){
+                    obj = (JSONObject) it.next();
+                    auxName=obj.get("hauteur").toString()+'-'+obj.get("couleur").toString();
+                    imgCartesPosees.add(new JLabel( new ImageIcon(ClassLoader.getSystemResource("images/"+auxName+".gif"))));
+                    imgCartesPosees.get(i).setLayout(new BorderLayout());
+                    imgCartesPosees.get(i).setSize(62,89);
+                    imgCartesPosees.get(i).setName(auxName);
+                    imgCartesPosees.get(i).setLocation(j, jPanel2.getHeight());
+                    this.jPanel2.add(imgCartesPosees.get(i), BorderLayout.CENTER);
+                    i++;
+                    j=j+60;
+
+                jPanel2.repaint();
+                } 
+            }
+            catch(Exception e){
+                System.out.println("error cartePosees : "+e.getLocalizedMessage());
+            }
         }
     }
 }

@@ -61,8 +61,13 @@ public class Listener extends Thread{
                     else if(buffer.matches("jeu::tour::.*")){
                         itfJeu.gererTour(buffer.split("::")[2]);
                     }
+                    //CARTES JOUABLES
                     else if(buffer.matches("jeu::cartesJouables::.*")){
                         itfJeu.remplirCartesJouables(buffer.split("::")[2]);
+                    }
+                    //CARTES POSEES
+                    else if(buffer.matches("jeu::CartesPosees::.*")){
+                        itfJeu.poserCartes(buffer.split("::")[2]);
                     }
                 }
             }
