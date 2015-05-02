@@ -358,7 +358,14 @@ public class InterfaceJeu extends javax.swing.JFrame{
         //à modifier (ou pas) pour envoyer en JSON
         Iterator it = cartesSelectionnees.iterator();
         String liste="[";
+        boolean flag=true;
         while(it.hasNext()){
+            if(flag){
+                flag=false;
+            }
+            else{
+                liste=liste+",";
+            }
             JLabel obj= (JLabel)it.next();
             liste=liste+"{\"couleur\":\""+obj.getName().split("-")[1]+"\",\"hauteur\":\""+obj.getName().split("-")[0]+"\"}";
         }
