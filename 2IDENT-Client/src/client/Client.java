@@ -77,6 +77,7 @@ public class Client extends Thread{
     }
     
     public void ecrireMessage(String msg){
+        System.out.println("envoyé : "+msg);
         out.println(msg);
     }
 

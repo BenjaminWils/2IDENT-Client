@@ -6,8 +6,14 @@
 package client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import static javax.swing.GroupLayout.Alignment.CENTER;
@@ -23,11 +29,13 @@ import org.json.simple.parser.JSONParser;
  */
 public class InterfaceJeu extends javax.swing.JFrame{
     private final Client c;
-    private JSONArray infosJoueurs, cartes;
+    private JSONArray infosJoueurs, cartes, cartesJouables;
     private final JSONParser parser;
     private JSONObject obj;
-    private String auxName;
-    private ArrayList<ImageIcon> imgCartes;
+    private String auxName, tourName;
+    private ArrayList<JLabel> imgCartes;
+    private ArrayList<Component> cartesSelectionnees;
+    private ArrayList<String> cartesJouablesString;
 
     /**
      * Creates new form InterfaceJeu
@@ -38,8 +46,14 @@ public class InterfaceJeu extends javax.swing.JFrame{
         this.c=cl;
         this.infosJoueurs=new JSONArray();
         this.cartes=new JSONArray();
+        this.cartesJouables=new JSONArray();
         parser = new JSONParser();
         this.imgCartes=new ArrayList();
+        this.cartesSelectionnees=new ArrayList();
+        this.cartesJouablesString=new ArrayList();
+        this.jButton1.setVisible(false);
+        this.jButton1.setEnabled(false);
+        tourName="";
     }
 
     /**
@@ -58,9 +72,12 @@ public class InterfaceJeu extends javax.swing.JFrame{
         jPanel1 = new javax.swing.JPanel();
         labelMsg = new javax.swing.JLabel();
         labelInfosJoueurs = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("2IDENT");
+        setMinimumSize(new java.awt.Dimension(700, 500));
+        setPreferredSize(new java.awt.Dimension(700, 500));
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -87,6 +104,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
         jPanel1.setBackground(new java.awt.Color(51, 102, 0));
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+        jPanel1.setName(""); // NOI18N
+        jPanel1.setPreferredSize(new java.awt.Dimension(480, 180));
 
         labelMsg.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         labelMsg.setForeground(java.awt.Color.white);
@@ -95,18 +114,22 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelInfosJoueurs.setForeground(java.awt.Color.white);
         labelInfosJoueurs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jButton1.setText("Jouer");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelInfosJoueurs)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelInfosJoueurs)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(56, 56, 56))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,7 +138,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addComponent(labelInfosJoueurs)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(121, 121, 121))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(92, 92, 92))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -124,7 +149,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtFieldChatEcr)
@@ -137,7 +162,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -180,6 +205,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChat;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelInfosJoueurs;
@@ -210,7 +236,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
     }
 
     public void distribuerCartes(String cartesList){
-        System.out.println("distribution des cartes");
+        //System.out.println("distribution des cartes");
         if(!cartesList.equals("[]")){
             imgCartes.clear();
             try{
@@ -220,30 +246,171 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 System.out.println("error json : "+e.getLocalizedMessage());
             }
             Iterator it = cartes.iterator();
-            
-            //while(it.hasNext()){
+            int i=0;
+            int j=0;
+            while(it.hasNext()){
                 obj = (JSONObject) it.next();
-                auxName=obj.get("hauteur").toString()+'-'+obj.get("couleur").toString()+".gif";
-                System.out.println(auxName);
-                ImageIcon icon = new ImageIcon(auxName); 
-                JLabel label = new JLabel(); 
-                label.setIcon(icon); 
-                jPanel1.add(label); 
-                //jPanel1.repaint(); 
-//                JLabel image = new JLabel( new ImageIcon(auxName));
-//                image.setLayout(new BorderLayout());
-//                image.setSize(jPanel1.getWidth(),jPanel1.getHeight());
-//                this.jPanel1.add(image, BorderLayout.CENTER);
-//                jPanel1.repaint();
+                auxName=obj.get("hauteur").toString()+'-'+obj.get("couleur").toString();
+            // System.out.println(auxName);
+                /*ImageIcon img=new ImageIcon(ClassLoader.getSystemResource("images/"+auxName));
+                System.out.println(img);
+                JLabel label = new JLabel();
+                label.setPreferredSize(new Dimension(img.getIconWidth(), img.getIconHeight()));
+                //label.setIcon(img);
+                label.setText("youpi!!");
+                jPanel2.add(label);
+                jPanel2.revalidate(); 
+                jPanel2.repaint(); */
+                imgCartes.add(new JLabel( new ImageIcon(ClassLoader.getSystemResource("images/"+auxName+".gif"))));
+                imgCartes.get(i).setLayout(new BorderLayout());
+                imgCartes.get(i).setSize(62,89);
+                imgCartes.get(i).setName(auxName);
+                imgCartes.get(i).addMouseListener(new MouseListener() {
+
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        //verifier si c'est son tour d'abord
+                        if(tourName.equals(c.pseudo)){
+                            if(cartesSelectionnees.contains(e.getComponent())){
+                                deselectionnerCarte(e.getComponent());
+                            }
+                            else{
+                                selectionnerCarte(e.getComponent());
+                            }
+                        }
+                        //System.out.println(e.getComponent().getClass());
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                    }
+                });
+                imgCartes.get(i).setLocation(j, jPanel1.getHeight()-92);
+                this.jPanel1.add(imgCartes.get(i), BorderLayout.SOUTH);
+                i++;
+                j=j+28;
+                
+            jPanel1.repaint();
 //                ImageIcon tempImg=new ImageIcon("../images/"+auxName+".gif");
 //                imgCartes.add(tempImg);
 //                Image b=tempImg.getImage();
 //                this.getGraphics().drawImage(b, 192, 280, null);
 //                tempImg.paintIcon(this, null, 192, 280);
-//                this.jPanel1.add(tempImg);
-           // }
+//                this.jPanel2.add(tempImg);
+            }
             
-            
+            jButton1.setVisible(true);
+            jButton1.addMouseListener(new MouseListener(){
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    jouerCartes();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                }
+            });
         }
+    }
+    
+    public void selectionnerCarte(Component carte){
+        cartesSelectionnees.add(carte);
+        carte.setLocation(carte.getLocation().x, carte.getLocation().y-10);
+        verifierCartes();
+    }
+    
+    public void deselectionnerCarte(Component carte){
+        cartesSelectionnees.remove(carte);
+        carte.setLocation(carte.getLocation().x, carte.getLocation().y+10);
+        verifierCartes();
+    }
+    
+    public void jouerCartes(){
+        c.ecrireMessage("jeu::cartesJouees::"+listerCartesJouees());
+    }
+    
+    public String listerCartesJouees(){
+        //à modifier (ou pas) pour envoyer en JSON
+        Iterator it = cartesSelectionnees.iterator();
+        String liste="[";
+        while(it.hasNext()){
+            JLabel obj= (JLabel)it.next();
+            liste=liste+"{\"couleur\":\""+obj.getName().split("-")[1]+"\",\"hauteur\":\""+obj.getName().split("-")[0]+"\"}";
+        }
+        liste=liste+"]";
+        return liste;
+    }
+    
+    public void gererTour(String pseudo){
+        tourName=pseudo;
+        if(tourName.equals(c.pseudo)){
+            afficherMessage("C'est à vous de jouer");
+        }
+        else{
+            afficherMessage("C'est à "+pseudo+" de jouer");
+        }
+    }
+    
+    public void remplirCartesJouables(String cartes){
+        cartesJouables.clear();
+        cartesJouablesString.clear();
+            try{
+                this.cartesJouables=(JSONArray) parser.parse(cartes);
+            }
+            catch(Exception e){
+                System.out.println("error json : "+e.getLocalizedMessage());
+            }
+            
+            Iterator it = cartesJouables.iterator();
+            while(it.hasNext()){
+                obj = (JSONObject) it.next();
+                cartesJouablesString.add(obj.get("hauteur")+"-"+obj.get("couleur"));
+            }
+            System.out.println(cartesJouables);
+    }
+    
+    public void verifierCartes(){
+        //on compare avec les cartes jouables
+        /*Iterator it = cartesSelectionnees.iterator();
+        boolean flag=false;
+        while(it.hasNext()){
+            JLabel o=(JLabel)it.next();
+            if(!cartesJouables.contains(o.getName())){
+                flag=true;
+            }          
+        }
+        //si ok on enabled le bouton jouer
+        if(!flag){
+          jButton1.setEnabled(true);
+        }
+        else{
+            jButton1.setEnabled(false);
+        }*/
+        jButton1.setEnabled(true);
     }
 }
