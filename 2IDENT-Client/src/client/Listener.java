@@ -67,7 +67,7 @@ public class Listener extends Thread{
                 }
             }
             catch(Exception e){
-                System.out.println("error listener : "+e.getMessage());
+                System.out.println("error listener : "+e.getLocalizedMessage()+"  "+e.getMessage());
             }
         }
     }

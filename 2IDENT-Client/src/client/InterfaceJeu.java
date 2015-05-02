@@ -392,32 +392,33 @@ public class InterfaceJeu extends javax.swing.JFrame{
             catch(Exception e){
                 System.out.println("error json : "+e.getLocalizedMessage());
             }
-            
+            /*
             Iterator it = cartesJouables.iterator();
             while(it.hasNext()){
                 obj = (JSONObject) it.next();
                 cartesJouablesString.add(obj.get("hauteur")+"-"+obj.get("couleur"));
-            }
-            System.out.println(cartesJouables);
+            }*/
+            System.out.println(cartesJouables.toString());
     }
     
     public void verifierCartes(){
         //on compare avec les cartes jouables
-        /*Iterator it = cartesSelectionnees.iterator();
-        boolean flag=false;
+        //on créer un JSON Array depuis les cartes selectionnées
+        Iterator it = cartesSelectionnees.iterator();
+        JSONArray arr = new JSONArray();
         while(it.hasNext()){
             JLabel o=(JLabel)it.next();
-            if(!cartesJouables.contains(o.getName())){
-                flag=true;
-            }          
+            JSONObject obj = new JSONObject();
+            obj.put("couleur", o.getName().split("-")[1]);
+            obj.put("hauteur", o.getName().split("-")[0]);
+            arr.add(obj);         
         }
         //si ok on enabled le bouton jouer
-        if(!flag){
+        if(!arr.isEmpty()&& cartesJouables.contains(arr)){
           jButton1.setEnabled(true);
         }
         else{
             jButton1.setEnabled(false);
-        }*/
-        jButton1.setEnabled(true);
+        }
     }
 }
