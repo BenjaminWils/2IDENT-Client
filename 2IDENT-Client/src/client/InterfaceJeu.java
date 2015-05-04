@@ -29,7 +29,7 @@ import org.json.simple.parser.JSONParser;
  */
 public class InterfaceJeu extends javax.swing.JFrame{
     private final Client c;
-    private JSONArray infosJoueurs, cartes, cartesJouables;
+    private JSONArray infosJoueurs, cartes, cartesJouables, cartesPosees;
     private final JSONParser parser;
     private JSONObject obj;
     private String auxName, tourName;
@@ -459,12 +459,12 @@ public class InterfaceJeu extends javax.swing.JFrame{
     }
     
     public void poserCartes(String cartesList){
-        jPanel2.removeAll();
-        System.out.println("cartes posées : "+cartesList);
-        if(!cartesList.equals("[]")){
-            try{
-                this.cartes=(JSONArray) parser.parse(cartesList);
-                Iterator it = cartes.iterator();
+        try{
+            imgCartesPosees.clear();
+            jPanel2.removeAll();
+            if(!cartesList.equals("[]")){
+                this.cartesPosees=(JSONArray) parser.parse(cartesList);
+                Iterator it = cartesPosees.iterator();
                 int i=0;
                 int j=0;
                 while(it.hasNext()){
@@ -474,17 +474,19 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     imgCartesPosees.get(i).setLayout(new BorderLayout());
                     imgCartesPosees.get(i).setSize(62,89);
                     imgCartesPosees.get(i).setName(auxName);
-                    imgCartesPosees.get(i).setLocation(j, jPanel2.getHeight());
-                    this.jPanel2.add(imgCartesPosees.get(i), BorderLayout.CENTER);
+                    imgCartesPosees.get(i).setLocation(j, jPanel2.getHeight()-92);
+                    this.jPanel2.add(imgCartesPosees.get(i), BorderLayout.SOUTH);
                     i++;
                     j=j+60;
 
                 jPanel2.repaint();
                 } 
             }
-            catch(Exception e){
-                System.out.println("error cartePosees : "+e.getLocalizedMessage());
-            }
         }
+        catch(Exception e){
+            System.out.println("error cartePosees : "+e.getLocalizedMessage());
+        }
+        
+        System.out.println(imgCartesPosees);
     }
 }
