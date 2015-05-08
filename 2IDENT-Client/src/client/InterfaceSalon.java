@@ -59,6 +59,7 @@ public class InterfaceSalon extends javax.swing.JFrame {
         labelError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("2IDENT");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Liste des salons :");

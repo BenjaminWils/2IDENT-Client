@@ -155,7 +155,7 @@ public class Client extends Thread{
     
     public void deconnecterSalon(){
         ecrireMessage("salon::fin");
-        itfJeu.setVisible(false);
+        itfJeu.dispose();
         itfJeu = new InterfaceJeu(this);
         itfSalon.setVisible(true);
     }

@@ -84,6 +84,7 @@ public class Listener extends Thread{
                     //FIN DU SALON
                     else if(buffer.matches("salon::fin")){
                         c.deconnecterSalon();
+                        this.currentThread().interrupt();
                     }
                 }
             }
