@@ -78,7 +78,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("2IDENT");
-        setMinimumSize(new java.awt.Dimension(700, 500));
+        setMinimumSize(new java.awt.Dimension(900, 600));
         setPreferredSize(new java.awt.Dimension(700, 500));
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -88,6 +88,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
         txtAreaChatLect.setEditable(false);
         txtAreaChatLect.setColumns(15);
+        txtAreaChatLect.setLineWrap(true);
         txtAreaChatLect.setRows(5);
         jScrollPane1.setViewportView(txtAreaChatLect);
 
