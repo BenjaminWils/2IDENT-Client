@@ -435,6 +435,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
             obj.put("hauteur", o.getName().split("-")[0]);
             arr.add(obj);         
         }
+        
+        System.out.println(arr);
         //si ok on enabled le bouton jouer
         if(!arr.isEmpty()&& cartesJouables.contains(arr)){
           jButton1.setEnabled(true);
