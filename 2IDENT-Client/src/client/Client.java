@@ -152,4 +152,11 @@ public class Client extends Thread{
             System.out.println("error connecter salon : "+e.getMessage());
         }
     }
+    
+    public void deconnecterSalon(){
+        ecrireMessage("salon::fin");
+        itfJeu.setVisible(false);
+        itfJeu = new InterfaceJeu(this);
+        itfSalon.setVisible(true);
+    }
 }

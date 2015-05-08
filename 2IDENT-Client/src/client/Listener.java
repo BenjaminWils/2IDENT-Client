@@ -81,6 +81,10 @@ public class Listener extends Thread{
                         
                         itfJeu.jouerInterSession(buffer.split("::")[2]);
                     }
+                    //FIN DU SALON
+                    else if(buffer.matches("salon::fin")){
+                        c.deconnecterSalon();
+                    }
                 }
             }
             catch(Exception e){
