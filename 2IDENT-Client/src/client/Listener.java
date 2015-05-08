@@ -74,11 +74,12 @@ public class Listener extends Thread{
                         itfJeu.nettoyerTable();
                     }
                     // INTER-SESSION
-                    else if(buffer.matches("jeu::echange::.*")){
-                        itfJeu.jouerInterSession(buffer.split("::")[2]);
-                    }
                     else if(buffer.matches("jeu::echange::fin")){
                         itfJeu.interSession=false;
+                    }
+                    else if(buffer.matches("jeu::echange::.*")){
+                        
+                        itfJeu.jouerInterSession(buffer.split("::")[2]);
                     }
                 }
             }

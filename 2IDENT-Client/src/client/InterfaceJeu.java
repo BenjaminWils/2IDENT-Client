@@ -100,8 +100,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
         txtAreaChatLect.setEditable(false);
         txtAreaChatLect.setColumns(15);
         txtAreaChatLect.setLineWrap(true);
-        txtAreaChatLect.setRows(5);
-        txtAreaChatLect.setMinimumSize(new java.awt.Dimension(104, 300));
+        txtAreaChatLect.setRows(15);
+        txtAreaChatLect.setWrapStyleWord(true);
+        txtAreaChatLect.setMinimumSize(new java.awt.Dimension(1000, 1000));
         jScrollPane1.setViewportView(txtAreaChatLect);
 
         btnChat.setText("Envoyer");
@@ -215,7 +216,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtFieldChatEcr)
-                    .addComponent(btnChat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(btnChat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1))
                 .addGap(10, 10, 10))
         );
@@ -224,13 +225,13 @@ public class InterfaceJeu extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFieldChatEcr, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnChat, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -342,7 +343,6 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         //verifier si c'est son tour d'abord
-                        System.out.println(tourName+" "+interSession);
                         if((tourName.equals(c.pseudo) && !interSession) || (interSession && (role.equals("president") || role.equals("vicepresident")))){
                             if(cartesSelectionnees.contains(e.getComponent())){
                                 deselectionnerCarte(e.getComponent());
