@@ -350,7 +350,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    jouerCartes();
+                    if(jButton1.isEnabled()){
+                        jouerCartes();
+                    }
                 }
 
                 @Override
@@ -375,7 +377,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    passer();
+                    if(jButton2.isEnabled()){
+                        passer();
+                    }
                 }
 
                 @Override
@@ -502,6 +506,20 @@ public class InterfaceJeu extends javax.swing.JFrame{
         }
         catch(Exception e){
             System.out.println("erreur nettoyage main : "+e.getMessage());
+        }
+    }
+    
+    public void nettoyerTable(){
+        try{
+            Iterator it = imgCartesPosees.iterator();
+            while(it.hasNext()){
+               JLabel aux = (JLabel) it.next();
+               aux.getParent().remove(aux);
+            }
+            imgCartesPosees.clear();
+        }
+        catch(Exception e){
+            System.out.println("erreur nettoyage table : "+e.getMessage());
         }
     }
     

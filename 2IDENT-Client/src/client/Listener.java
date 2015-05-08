@@ -69,6 +69,10 @@ public class Listener extends Thread{
                     else if(buffer.matches("jeu::cartesPosees::.*")){
                         itfJeu.poserCartes(buffer.split("::")[2]);
                     }
+                    //SESSION SUIVANTE
+                    else if(buffer.matches("jeu::sessionSuivante")){
+                        itfJeu.nettoyerTable();
+                    }
                 }
             }
             catch(Exception e){

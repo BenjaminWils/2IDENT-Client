@@ -17,8 +17,8 @@ import java.net.Socket;
  */
 public class Client extends Thread{
     private Socket soc;
-    private final String hostAddress = "127.0.0.1";
-    //private final String hostAddress = "78.242.69.141";
+    //private final String hostAddress = "127.0.0.1";
+    private final String hostAddress = "78.242.69.141";
     private final int portSoc = 2000;
     private BufferedReader in;
     private PrintWriter out;
