@@ -37,6 +37,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
     private ArrayList<JLabel> imgCartes, imgCartesPosees;
     private ArrayList<Component> cartesSelectionnees;
     private ArrayList<String> cartesJouablesString;
+    private String role;
+    private boolean interSession;
 
     /**
      * Creates new form InterfaceJeu
@@ -56,6 +58,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         this.jButton1.setVisible(false);
         this.jButton2.setVisible(false);
         tourName="";
+        interSession=false;
         DefaultCaret caret = (DefaultCaret)this.txtAreaChatLect.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
@@ -305,7 +308,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         //verifier si c'est son tour d'abord
-                        if(tourName.equals(c.pseudo)){
+                        if(tourName.equals(c.pseudo) || (interSession && (role.equals("president") || role.equals("vicepresident")))){
                             if(cartesSelectionnees.contains(e.getComponent())){
                                 deselectionnerCarte(e.getComponent());
                             }
@@ -352,7 +355,12 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(jButton1.isEnabled()){
-                        jouerCartes();
+                        if(interSession){
+                            donnerCartes();
+                        }
+                        else{
+                            jouerCartes();         
+                        }
                     }
                 }
 
@@ -488,11 +496,31 @@ public class InterfaceJeu extends javax.swing.JFrame{
         
         System.out.println(arr);
         //si ok on enabled le bouton jouer
-        if(!arr.isEmpty()&& cartesJouables.contains(arr)){
-          jButton1.setEnabled(true);
+        if(!interSession){
+            if(!arr.isEmpty()&& cartesJouables.contains(arr)){
+              jButton1.setEnabled(true);
+            }
+            else{
+                jButton1.setEnabled(false);
+            }
         }
         else{
-            jButton1.setEnabled(false);
+            if(role.equals("president")){
+                if(arr.size()==2){
+                    jButton1.setEnabled(true);
+                }
+                else{
+                    jButton1.setEnabled(false);
+                }
+            }
+            else if(role.equals("vicepresident")){
+                if(arr.size()==1){
+                    jButton1.setEnabled(true);
+                }
+                else{
+                    jButton1.setEnabled(false);
+                }
+            }
         }
     }
     
@@ -557,5 +585,32 @@ public class InterfaceJeu extends javax.swing.JFrame{
         }
         
         System.out.println(imgCartesPosees);
+    }
+    
+    public void jouerInterSession(String roleRecu){
+        switch(roleRecu){
+            case "president" :
+                afficherMessage("Vous êtes Président, veuillez donner deux cartes de votre choix au Trou du cul");
+            break;
+            case "vicepresident" :
+                afficherMessage("Vous êtes Vice-Président, veuillez donner une carte de votre choix au Secrétaire");
+            break;
+            case "secretaire" :
+                afficherMessage("Vous êtes Secrétaire, votre meilleure carte va être donnée au Vice-Président");
+            break;
+            case "trouducul" :
+                afficherMessage("Vous êtes Trou du cul, vos deux meilleures cartes vont être données au Président");
+            break;
+            case "neutre" :
+                afficherMessage("Vous êtes Neutre, veuilez attendreque les échanges de cartes se termine");
+            break;
+        }
+        role=roleRecu;
+        interSession=true;
+    }
+    
+    private void donnerCartes(){
+        c.ecrireMessage("jeu::echange::"+listerCartesJouees());
+        jButton1.setEnabled(false);
     }
 }
