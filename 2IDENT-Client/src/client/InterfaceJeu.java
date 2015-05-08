@@ -127,7 +127,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelMsg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         labelInfosJoueurs.setForeground(java.awt.Color.white);
-        labelInfosJoueurs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelInfosJoueurs.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jButton1.setText("Jouer");
         jButton1.setEnabled(false);
@@ -150,42 +150,45 @@ public class InterfaceJeu extends javax.swing.JFrame{
 
         labelInfosPerso1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         labelInfosPerso1.setForeground(java.awt.Color.white);
+        labelInfosPerso1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         labelInfosPerso2.setForeground(java.awt.Color.white);
+        labelInfosPerso2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         labelInfosPerso3.setForeground(java.awt.Color.white);
+        labelInfosPerso3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelInfosPerso2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labelInfosPerso3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                    .addComponent(labelInfosPerso1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 446, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelInfosJoueurs, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 430, Short.MAX_VALUE)))
+                        .addComponent(labelInfosJoueurs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelInfosPerso3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                    .addComponent(labelInfosPerso1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelInfosPerso2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelInfosJoueurs, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
+                .addGap(66, 66, 66)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -198,7 +201,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelInfosPerso2, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelInfosPerso3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(labelInfosPerso3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -291,12 +295,12 @@ public class InterfaceJeu extends javax.swing.JFrame{
             while(it.hasNext()){
                 obj = (JSONObject) it.next();
                 if(!obj.get("pseudo").equals(c.pseudo)){
-                    text=text+"< "+obj.get("pseudo")+" ["+obj.get("role")+"] "+obj.get("nbCartes")+" cartes > ";
+                    text=text+"< "+obj.get("pseudo").toString()+" ["+obj.get("role").toString()+"] "+obj.get("nbCartes").toString()+" cartes > ";
                 }
                 else{
                     labelInfosPerso1.setText(obj.get("pseudo").toString());
                     labelInfosPerso2.setText(obj.get("role").toString());
-                    labelInfosPerso3.setText(obj.get("cartes").toString()+" cartes");
+                    labelInfosPerso3.setText(obj.get("nbCartes").toString()+" cartes");
                 }
             }
             labelInfosJoueurs.setText(text);
@@ -338,6 +342,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         //verifier si c'est son tour d'abord
+                        System.out.println(tourName+" "+interSession);
                         if((tourName.equals(c.pseudo) && !interSession) || (interSession && (role.equals("president") || role.equals("vicepresident")))){
                             if(cartesSelectionnees.contains(e.getComponent())){
                                 deselectionnerCarte(e.getComponent());
