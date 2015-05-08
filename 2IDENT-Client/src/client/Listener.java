@@ -77,6 +77,9 @@ public class Listener extends Thread{
                     else if(buffer.matches("jeu::echange::.*")){
                         itfJeu.jouerInterSession(buffer.split("::")[2]);
                     }
+                    else if(buffer.matches("jeu::echange::fin")){
+                        itfJeu.interSession=false;
+                    }
                 }
             }
             catch(Exception e){
