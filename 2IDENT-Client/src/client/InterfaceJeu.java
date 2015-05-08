@@ -19,6 +19,7 @@ import java.util.Iterator;
 import static javax.swing.GroupLayout.Alignment.CENTER;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.text.DefaultCaret;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -55,6 +56,8 @@ public class InterfaceJeu extends javax.swing.JFrame{
         this.jButton1.setVisible(false);
         this.jButton2.setVisible(false);
         tourName="";
+        DefaultCaret caret = (DefaultCaret)this.txtAreaChatLect.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
 
     /**
@@ -81,6 +84,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         setTitle("2IDENT");
         setMinimumSize(new java.awt.Dimension(900, 600));
         setPreferredSize(new java.awt.Dimension(700, 500));
+        setResizable(false);
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
@@ -329,7 +333,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     }
                 });
                 imgCartes.get(i).setLocation(j, jPanel1.getHeight()-92);
-                this.jPanel1.add(imgCartes.get(i), BorderLayout.SOUTH);
+                this.jPanel1.add(imgCartes.get(i), BorderLayout.CENTER);
                 i++;
                 j=j+28;
                 
@@ -500,6 +504,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                aux.getParent().remove(aux);
             }
             imgCartes.clear();
+            jPanel1.repaint();
         }
         catch(Exception e){
             System.out.println("erreur nettoyage main : "+e.getMessage());
@@ -518,6 +523,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         catch(Exception e){
             System.out.println("erreur nettoyage table : "+e.getMessage());
         }
+        jPanel2.repaint();
     }
     
     public void poserCartes(String cartesList){
@@ -537,10 +543,11 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     imgCartesPosees.get(i).setSize(62,89);
                     imgCartesPosees.get(i).setName(auxName);
                     imgCartesPosees.get(i).setLocation(j, jPanel2.getHeight()-92);
-                    this.jPanel2.add(imgCartesPosees.get(i), BorderLayout.SOUTH);
+                    this.jPanel2.add(imgCartesPosees.get(i), BorderLayout.CENTER);
                     i++;
                     j=j+60;
-
+                
+                jPanel2.setAlignmentY(CENTER_ALIGNMENT);
                 jPanel2.repaint();
                 } 
             }

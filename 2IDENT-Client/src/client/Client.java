@@ -46,6 +46,7 @@ public class Client extends Thread{
                     itfPseudo.getTextError().setForeground(Color.red);
                 }
                 buffer = this.in.readLine();
+                System.out.println("listened : "+buffer);
             }
             while(buffer.equals("pseudo::dispo::ko"));
 
@@ -53,7 +54,7 @@ public class Client extends Thread{
             itfPseudo.dispose();
             
             buffer = this.in.readLine();
-            
+            System.out.println("listened : "+buffer);
             String[] decoup = buffer.split("::");
             
             if(decoup[0].equals("salon") && decoup[1].equals("liste")){
