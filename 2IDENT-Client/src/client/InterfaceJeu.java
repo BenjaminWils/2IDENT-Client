@@ -53,7 +53,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         this.cartesSelectionnees=new ArrayList();
         this.cartesJouablesString=new ArrayList();
         this.jButton1.setVisible(false);
-        this.jButton1.setEnabled(false);
+        this.jButton2.setVisible(false);
         tourName="";
     }
 
@@ -75,6 +75,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelInfosJoueurs = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("2IDENT");
@@ -118,6 +119,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         labelInfosJoueurs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jButton1.setText("Jouer");
+        jButton1.setEnabled(false);
 
         jPanel2.setBackground(new java.awt.Color(51, 102, 0));
 
@@ -132,24 +134,30 @@ public class InterfaceJeu extends javax.swing.JFrame{
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        jButton2.setText("Passer");
+        jButton2.setEnabled(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelInfosJoueurs)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(56, 56, 56))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(178, 178, 178)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelInfosJoueurs))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,7 +169,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addGap(92, 92, 92))
         );
 
@@ -228,6 +238,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChat;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -358,6 +369,31 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 public void mouseExited(MouseEvent e) {
                 }
             });
+            
+            jButton2.setVisible(true);
+            jButton2.addMouseListener(new MouseListener(){
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    passer();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                }
+            });
         }
     }
     
@@ -375,6 +411,11 @@ public class InterfaceJeu extends javax.swing.JFrame{
     
     public void jouerCartes(){
         c.ecrireMessage("jeu::cartesJouees::"+listerCartesJouees());
+        jButton1.setEnabled(false);
+    }
+    
+    public void passer(){
+        c.ecrireMessage("jeu::cartesJouees::");
     }
     
     public String listerCartesJouees(){
@@ -401,9 +442,11 @@ public class InterfaceJeu extends javax.swing.JFrame{
         tourName=pseudo;
         if(tourName.equals(c.pseudo)){
             afficherMessage("C'est à vous de jouer");
+            jButton2.setEnabled(true);
         }
         else{
             afficherMessage("C'est à "+pseudo+" de jouer");
+            jButton2.setEnabled(false);
         }
     }
     
