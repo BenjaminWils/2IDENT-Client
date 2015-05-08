@@ -82,6 +82,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        labelInfosPerso1 = new javax.swing.JLabel();
+        labelInfosPerso2 = new javax.swing.JLabel();
+        labelInfosPerso3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("2IDENT");
@@ -118,7 +121,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
         jPanel1.setName(""); // NOI18N
         jPanel1.setPreferredSize(new java.awt.Dimension(480, 180));
 
-        labelMsg.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelMsg.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         labelMsg.setForeground(java.awt.Color.white);
         labelMsg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -151,17 +154,23 @@ public class InterfaceJeu extends javax.swing.JFrame{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(labelInfosJoueurs))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
+                        .addGap(0, 326, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelInfosJoueurs, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2))))
+                    .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelInfosPerso2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(labelInfosPerso3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                    .addComponent(labelInfosPerso1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,12 +180,17 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(92, 92, 92))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelInfosPerso1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelInfosPerso2)
+                .addGap(12, 12, 12)
+                .addComponent(labelInfosPerso3))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,7 +199,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtFieldChatEcr)
@@ -198,14 +212,14 @@ public class InterfaceJeu extends javax.swing.JFrame{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFieldChatEcr, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(btnChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         pack();
@@ -247,6 +261,9 @@ public class InterfaceJeu extends javax.swing.JFrame{
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelInfosJoueurs;
+    private javax.swing.JLabel labelInfosPerso1;
+    private javax.swing.JLabel labelInfosPerso2;
+    private javax.swing.JLabel labelInfosPerso3;
     private javax.swing.JLabel labelMsg;
     private javax.swing.JTextArea txtAreaChatLect;
     private javax.swing.JTextField txtFieldChatEcr;
@@ -263,13 +280,16 @@ public class InterfaceJeu extends javax.swing.JFrame{
             Iterator it = infosJoueurs.iterator();
             
             String text="";
+            String text2="";
             while(it.hasNext()){
                 obj = (JSONObject) it.next();
                 if(!obj.get("pseudo").equals(c.pseudo)){
                     text=text+"< "+obj.get("pseudo")+" ["+obj.get("role")+"] "+obj.get("nbCartes")+" cartes > ";
                 }
+                else text2=obj.get("pseudo")+"<br>["+obj.get("role")+"]<br>"+obj.get("nbCartes")+" cartes";
             }
             labelInfosJoueurs.setText(text);
+            labelInfosPerso1.setText(text2);
         }
     }
 
@@ -308,7 +328,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         //verifier si c'est son tour d'abord
-                        if(tourName.equals(c.pseudo) || (interSession && (role.equals("president") || role.equals("vicepresident")))){
+                        if((tourName.equals(c.pseudo) && !interSession) || (interSession && (role.equals("president") || role.equals("vicepresident")))){
                             if(cartesSelectionnees.contains(e.getComponent())){
                                 deselectionnerCarte(e.getComponent());
                             }
@@ -602,7 +622,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
                 afficherMessage("Vous êtes Trou du cul, vos deux meilleures cartes vont être données au Président");
             break;
             case "neutre" :
-                afficherMessage("Vous êtes Neutre, veuilez attendreque les échanges de cartes se termine");
+                afficherMessage("Vous êtes Neutre, veuilez attendre que les échanges de cartes se terminent");
             break;
         }
         role=roleRecu;
