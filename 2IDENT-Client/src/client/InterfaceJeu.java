@@ -392,6 +392,7 @@ public class InterfaceJeu extends javax.swing.JFrame{
             liste=liste+"{\"couleur\":\""+obj.getName().split("-")[1]+"\",\"hauteur\":\""+obj.getName().split("-")[0]+"\"}";
         }
         liste=liste+"]";
+        cartesSelectionnees.clear();
         return liste;
     }
     
